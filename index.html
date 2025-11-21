@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GROOME - Your AI-Powered Grooming Companion</title>
+    <style>
+        :root {
+            --primary-purple: #9b4dff;
+            --dark-purple: #7a3acc;
+            --light-purple: #b56fff;
+            --bg-dark: #1a1a2e;
+            --bg-darker: #0f0f1e;
+            --bg-card: #262640;
+            --text-light: #ffffff;
+            --text-gray: #b0b0c0;
+            --accent-green: #4ecca3;
+            --accent-pink: #ff6b9d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 15, 30, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(155, 77, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            letter-spacing: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-purple);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-purple);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-light);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+            padding: 6rem 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(155, 77, 255, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text .tagline {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+        }
+
+        .hero-text .mission {
+            font-size: 1.1rem;
+            color: var(--accent-green);
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(78, 204, 163, 0.1);
+            border-left: 3px solid var(--accent-green);
+            border-radius: 5px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 5px 20px rgba(155, 77, 255, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
+            color: var(--text-light);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(155, 77, 255, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--primary-purple);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-purple);
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        /* Floating 3D elements */
+        .floating-elements {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .float-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(1px);
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(155, 77, 255, 0.3) 0%, rgba(78, 204, 163, 0.3) 100%);
+            animation: float3d-1 8s ease-in-out infinite;
+        }
+
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(225deg, rgba(255, 107, 157, 0.3) 0%, rgba(155, 77, 255, 0.3) 100%);
+            animation: float3d-2 6s ease-in-out infinite;
+        }
+
+        .circle-3 {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(315deg, rgba(78, 204, 163, 0.4) 0%, rgba(155, 77, 255, 0.2) 100%);
+            animation: float3d-3 7s ease-in-out infinite;
+        }
+
+        .hero-3d-text {
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-green) 50%, var(--accent-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
+            animation: text3d 4s ease-in-out infinite;
+            text-shadow: 0 10px 30px rgba(155, 77, 255, 0.5);
+            letter-spacing: 10px;
+        }
+
+        @keyframes float3d-1 {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            25% { 
+                transform: translate(50px, -30px) scale(1.1) rotate(90deg);
+            }
+            50% { 
+                transform: translate(80px, 20px) scale(0.9) rotate(180deg);
+            }
+            75% { 
+                transform: translate(-30px, 40px) scale(1.05) rotate(270deg);
+            }
+        }
+
+        @keyframes float3d-2 {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1) rotate(360deg);
+            }
+            33% { 
+                transform: translate(-60px, 50px) scale(1.2) rotate(240deg);
+            }
+            66% { 
+                transform: translate(40px, -40px) scale(0.85) rotate(120deg);
+            }
+        }
+
+        @keyframes float3d-3 {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            20% { 
+                transform: translate(70px, 30px) scale(1.15) rotate(72deg);
+            }
+            40% { 
+                transform: translate(-50px, -20px) scale(0.95) rotate(144deg);
+            }
+            60% { 
+                transform: translate(30px, 60px) scale(1.1) rotate(216deg);
+            }
+            80% { 
+                transform: translate(-40px, -50px) scale(0.9) rotate(288deg);
+            }
+        }
+
+        @keyframes text3d {
+            0%, 100% { 
+                transform: perspective(500px) rotateY(0deg) rotateX(0deg);
+                text-shadow: 0 10px 30px rgba(155, 77, 255, 0.5);
+            }
+            25% { 
+                transform: perspective(500px) rotateY(10deg) rotateX(-5deg);
+                text-shadow: -10px 10px 30px rgba(78, 204, 163, 0.6);
+            }
+            50% { 
+                transform: perspective(500px) rotateY(0deg) rotateX(5deg);
+                text-shadow: 0 20px 40px rgba(255, 107, 157, 0.6);
+            }
+            75% { 
+                transform: perspective(500px) rotateY(-10deg) rotateX(-5deg);
+                text-shadow: 10px 10px 30px rgba(155, 77, 255, 0.6);
+            }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--bg-darker);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 30px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(155, 77, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-purple) 0%, var(--accent-green) 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(155, 77, 255, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-purple);
+        }
+
+        .feature-card p {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 50%, var(--primary-purple) 100%);
+            background-size: 200% 200%;
+            animation: statsGradient 8s ease infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(78, 204, 163, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -200px;
+            right: 10%;
+            animation: pulse 5s ease-in-out infinite;
+        }
+
+        .stats::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -150px;
+            left: 10%;
+            animation: pulse 4s ease-in-out infinite reverse;
+        }
+
+        @keyframes statsGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-green);
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Team Section */
+        .team {
+            padding: 6rem 2rem;
+            background: var(--bg-dark);
+        }
+
+        .team-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(155, 77, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 30px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-green), var(--accent-pink));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .team-card:hover::before {
+            opacity: 1;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(155, 77, 255, 0.3);
+        }
+        .team-img-box {
+            width: 120px;
+            height: 120px;
+            margin: 32px auto 0 auto;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple) 38%, var(--dark-purple) 62%);
+            box-shadow: 0 8px 32px rgba(155,77,255,0.09);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .team-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%; /* makes image always circular */
+            transition: filter .2s;
+        }
+        .team-card:hover .team-img {
+            filter: brightness(1.07) saturate(1.12) drop-shadow(0 0 12px #9b4dff44);
+        }
+
+
+        .team-info {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .team-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-purple);
+        }
+
+        .team-info .role {
+            color: var(--accent-green);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-info .education {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Timeline Section */
+        .timeline {
+            padding: 6rem 2rem;
+            background: var(--bg-darker);
+        }
+
+        .timeline-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-purple) 0%, var(--accent-green) 100%);
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-content {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 25px;
+            width: 45%;
+            border: 1px solid rgba(155, 77, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.05) translateX(-10px);
+            box-shadow: 0 20px 60px rgba(155, 77, 255, 0.4);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content:hover {
+            transform: scale(1.05) translateX(10px);
+        }
+
+        .timeline-content::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 25px;
+            background: linear-gradient(135deg, transparent, rgba(155, 77, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .timeline-content:hover::after {
+            opacity: 1;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--primary-purple);
+            border: 4px solid var(--bg-darker);
+            border-radius: 50%;
+            top: 20px;
+        }
+
+        .timeline-content h3 {
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-gray);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 2rem;
+            background: var(--bg-dark);
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 25px;
+            text-align: center;
+            border: 1px solid rgba(155, 77, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(155, 77, 255, 0.3);
+        }
+
+        .contact-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-purple);
+        }
+
+        .contact-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-purple);
+        }
+
+        .contact-card a {
+            color: var(--accent-green);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-card a:hover {
+            color: var(--light-purple);
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: 30px;
+            border: 1px solid rgba(155, 77, 255, 0.1);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .contact-form::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(155, 77, 255, 0.1) 0%, transparent 70%);
+            animation: formGlow 6s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes formGlow {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10%, 10%) scale(1.1); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+            font-weight: 500;
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-dark);
+            border: 1px solid rgba(155, 77, 255, 0.3);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: border 0.3s;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            background: var(--bg-darker);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .form-message.success {
+            background: rgba(78, 204, 163, 0.2);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        .form-message.error {
+            background: rgba(255, 107, 157, 0.2);
+            color: var(--accent-pink);
+            border: 1px solid var(--accent-pink);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-darker);
+            padding: 3rem 2rem 1rem;
+            border-top: 1px solid rgba(155, 77, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--text-gray);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-purple);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-purple);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(155, 77, 255, 0.1);
+            color: var(--text-gray);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                flex-direction: column;
+                background: var(--bg-darker);
+                width: 100%;
+                padding: 2rem;
+                transition: left 0.3s;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+            }
+
+            .timeline-container::before {
+                left: 20px;
+            }
+
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+            }
+
+            .timeline-item::before {
+                left: 20px;
+            }
+
+            .contact-form {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .stat-item h3 {
+                font-size: 2rem;
+            }
+        }
+
+        /* 3D Card Effects */
+        .feature-card,
+        .team-card,
+        .contact-card {
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-20px) rotateX(10deg) scale(1.05);
+            box-shadow: 0 30px 60px rgba(155, 77, 255, 0.4);
+        }
+
+        .team-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 30px 60px rgba(155, 77, 255, 0.4);
+        }
+
+        /* Animated Background Particles */
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(78, 204, 163, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -150px;
+            animation: pulse 5s ease-in-out infinite reverse;
+        }
+
+        /* Floating animation for cards */
+        @keyframes floatCard {
+            0%, 100% { 
+                transform: translateY(0) translateX(0) rotateZ(0deg);
+            }
+            25% { 
+                transform: translateY(-15px) translateX(10px) rotateZ(2deg);
+            }
+            50% { 
+                transform: translateY(-8px) translateX(-8px) rotateZ(-1deg);
+            }
+            75% { 
+                transform: translateY(-20px) translateX(5px) rotateZ(1deg);
+            }
+        }
+
+        .feature-card:nth-child(odd) {
+            animation: floatCard 8s ease-in-out infinite;
+        }
+
+        .feature-card:nth-child(even) {
+            animation: floatCard 8s ease-in-out infinite reverse;
+        }
+
+        .feature-card:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .feature-card:nth-child(4) {
+            animation-delay: 1.5s;
+        }
+
+        .feature-card:nth-child(5) {
+            animation-delay: 2s;
+        }
+
+        .feature-card:nth-child(6) {
+            animation-delay: 2.5s;
+        }
+
+        /* Glowing text effect */
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 5px rgba(155, 77, 255, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(155, 77, 255, 0.8), 0 0 30px rgba(155, 77, 255, 0.6); }
+        }
+
+        .section-title {
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        /* 3D Perspective Container */
+        .features-grid,
+        .team-grid {
+            perspective: 1000px;
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s, transform 0.6s;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Interactive hover effects */
+        .btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Gradient animation for hero */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 50%, var(--bg-darker) 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        /* Parallax effect elements */
+        .parallax-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Logo pulse animation */
+        .logo img {
+            transition: transform 0.3s;
+        }
+
+        .logo:hover img {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Card shine effect */
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+
+        .feature-card:hover::after {
+            opacity: 1;
+            animation: shine 1.5s ease-in-out;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <img src="logo.png">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#roadmap">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text fade-in">
+                <h1>GROOME</h1>
+                <p class="tagline">Your AI-Powered Grooming Companion</p>
+                <p class="mission">🎯 Transforming the grooming experience with innovative technology</p>
+                <p style="color: var(--text-gray); margin-bottom: 2rem;">
+                    Your smart companion for discovering and booking premium grooming services
+                </p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-primary">Get Started</a>
+                    <a href="#features" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image fade-in">
+                <div class="floating-elements">
+                    <div class="float-circle circle-1"></div>
+                    <div class="float-circle circle-2"></div>
+                    <div class="float-circle circle-3"></div>
+                    <div class="hero-3d-text">GROOME</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision Mission Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>🎯</h3>
+                <p><strong>Our Vision</strong><br>Making quality grooming accessible to everyone</p>
+            </div>
+            <div class="stat-item">
+                <h3>💡</h3>
+                <p><strong>Innovation</strong><br>Powered by cutting-edge technology</p>
+            </div>
+            <div class="stat-item">
+                <h3>🤝</h3>
+                <p><strong>Our Mission</strong><br>Connecting people with trusted professionals</p>
+            </div>
+            <div class="stat-item">
+                <h3>🌟</h3>
+                <p><strong>Excellence</strong><br>Delivering exceptional experiences</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title fade-in">What We Offer</h2>
+        <p class="section-subtitle fade-in">Experience the future of grooming services</p>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🎨</div>
+                <h3>Smart Styling</h3>
+                <p>Discover personalized grooming recommendations powered by advanced technology. Find the perfect look that suits your unique style and preferences.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">📱</div>
+                <h3>Easy Booking</h3>
+                <p>Schedule appointments with top-rated salons effortlessly. Our intuitive platform makes finding and booking your next grooming session simple and fast.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🌐</div>
+                <h3>Multi-Language Support</h3>
+                <p>Access our services in your preferred language. We believe grooming should be accessible to everyone, breaking down language barriers.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">⭐</div>
+                <h3>Premium Partners</h3>
+                <p>Connect with verified and trusted salon professionals. We carefully curate our network to ensure you receive the highest quality service every time.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🔔</div>
+                <h3>Smart Notifications</h3>
+                <p>Stay updated with appointment reminders and exclusive offers. Never miss a booking or special promotion from your favorite salons.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">💼</div>
+                <h3>Business Solutions</h3>
+                <p>Comprehensive tools for salon owners to manage their business efficiently. From scheduling to analytics, everything you need in one place.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <!-- Team Section -->
+    <section class="team" id="team">
+        <h2 class="section-title fade-in">Meet Our Team</h2>
+        <p class="section-subtitle fade-in">Passionate professionals dedicated to transforming your grooming experience</p>
+        <div class="team-grid">
+            <div class="team-card fade-in">
+                <div class="team-img-box">
+                    <img src="ash.jpg" class="team-img" alt="Ashwin Kumar N">
+                </div>
+                <div class="team-info">
+                    <h3>Ashwin Kumar N</h3>
+                    <p class="role">Co-Founder & CEO</p>
+                    <p class="education">Technology & Business Strategy</p>
+                </div>
+            </div>
+            <div class="team-card fade-in">
+                <div class="team-img-box">
+                    <img src="kanna.jpg" class="team-img" alt="Kannan Suresh VV">
+                </div>
+                <div class="team-info">
+                    <h3>Kannan Suresh VV</h3>
+                    <p class="role">Co-Founder & CTO</p>
+                    <p class="education">Engineering & Product Development</p>
+                </div>
+            </div>
+            <div class="team-card fade-in">
+                <div class="team-img-box">
+                    <img src="harish.jpg" class="team-img" alt="Harish L">
+                </div>
+                <div class="team-info">
+                    <h3>Harish L</h3>
+                    <p class="role">Co-Founder & CMO</p>
+                    <p class="education">Marketing & Growth Strategy</p>
+                </div>
+            </div>
+            <div class="team-card fade-in">
+                <div class="team-img-box">
+                    <img src="hari.jpg" class="team-img" alt="Hari Haran G">
+                </div>
+                <div class="team-info">
+                    <h3>Hari Haran G</h3>
+                    <p class="role">Co-Founder & COO</p>
+                    <p class="education">Operations & Customer Success</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- About Section -->
+    <section class="timeline" id="roadmap">
+        <h2 class="section-title fade-in">About GROOME</h2>
+        <p class="section-subtitle fade-in">Building the future of grooming services</p>
+        <div class="timeline-container">
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <h3>🚀 Innovation First</h3>
+                    <p>We leverage cutting-edge technology to revolutionize how people discover and experience grooming services. Our platform combines ease of use with powerful features.</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <h3>🌱 Growing Together</h3>
+                    <p>Expanding our network of trusted salon partners and building a community of satisfied customers. We're committed to creating value for both service providers and users.</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <h3>🎯 Customer Focused</h3>
+                    <p>Every feature we build is designed with you in mind. From seamless booking to personalized recommendations, we're here to make your grooming journey exceptional.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2 class="section-title fade-in">Get In Touch</h2>
+        <p class="section-subtitle fade-in">Ready to revolutionize grooming? Let's talk!</p>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-card fade-in">
+                    <div class="icon">📧</div>
+                    <h3>Email</h3>
+                    <a href="mailto:groomeofficial001@gmail.com">groomeofficial001@gmail.com</a>
+                </div>
+                <div class="contact-card fade-in">
+                    <div class="icon">📱</div>
+                    <h3>Instagram</h3>
+                    <a href="https://instagram.com/groome_official" target="_blank">@groome_official</a>
+                </div>
+                <div class="contact-card fade-in">
+                    <div class="icon">📍</div>
+                    <h3>Location</h3>
+                    <p>Chennai, Tamil Nadu, India</p>
+                </div>
+            </div>
+
+            <form class="contact-form fade-in" id="contactForm">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary-purple); position: relative; z-index: 10;">Send us a message</h3>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="from_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="from_email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                <div class="form-message" id="formMessage"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About GROOME</h3>
+                <p>Your trusted partner for discovering and booking premium grooming services. Making quality grooming accessible and convenient for everyone.</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/groome__official" target="_blank" aria-label="Instagram">📱</a>
+                    <a href="mailto:groomeofficial001@gmail.com" aria-label="Email">📧</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#team">Team</a>
+                <a href="#roadmap">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h3>For Businesses</h3>
+                <a href="#contact">Partner With Us</a>
+                <a href="#contact">Salon Onboarding</a>
+                <a href="#features">GROOME PRO</a>
+                <a href="#contact">Investment Opportunities</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <a href="mailto:groomeofficial001@gmail.com">📧 groomeofficial001@gmail.com</a>
+                <a href="https://www.instagram.com/groome__official">📱 @groome__official</a>
+                <p>📍 Chennai, Tamil Nadu</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 GROOME. All rights reserved. | Book | Shop | Shine</p>
+        </div>
+    </footer>
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS
+        (function(){
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual public key
+        })();
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Contact Form Handler with EmailJS
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.getElementById('formMessage');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Show loading state
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            // Send email using EmailJS
+            emailjs.sendForm(
+                'YOUR_SERVICE_ID',    // Replace with your service ID
+                'YOUR_TEMPLATE_ID',   // Replace with your template ID
+                contactForm
+            )
+            .then(() => {
+                formMessage.textContent = '✅ Thank you for your message! We\'ll get back to you soon.';
+                formMessage.className = 'form-message success';
+                formMessage.style.display = 'block';
+                contactForm.reset();
+                
+                // Reset button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            })
+            .catch((error) => {
+                console.error('EmailJS Error:', error);
+                formMessage.textContent = '❌ Sorry, something went wrong. Please try again or email us directly at groomeofficial001@gmail.com';
+                formMessage.className = 'form-message error';
+                formMessage.style.display = 'block';
+                
+                // Reset button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                formMessage.style.display = 'none';
+            }, 5000);
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(15, 15, 30, 0.98)';
+            } else {
+                nav.style.background = 'rgba(15, 15, 30, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
