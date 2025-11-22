@@ -1148,6 +1148,7 @@
     </nav>
 
     <!-- Hero Section -->
+    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
             <div class="hero-text fade-in">
@@ -1163,15 +1164,14 @@
                 </div>
             </div>
             <div class="hero-image fade-in">
-                <div class="floating-elements">
-                    <div class="float-circle circle-1"></div>
-                    <div class="float-circle circle-2"></div>
-                    <div class="float-circle circle-3"></div>
-                    <div class="hero-3d-text">GROOME</div>
-                </div>
+                <spline-viewer 
+                    url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                    style="width: 100%; height: 500px; border-radius: 20px;">
+                </spline-viewer>
             </div>
         </div>
     </section>
+
 
     <!-- Vision Mission Section -->
     <section class="stats">
@@ -1323,7 +1323,7 @@
                 <div class="contact-card fade-in">
                     <div class="icon">📱</div>
                     <h3>Instagram</h3>
-                    <a href="https://instagram.com/groome__official" target="_blank">@groome__official</a>
+                    <a href="https://instagram.com/groome__official" target="_blank">@groome_official</a>
                 </div>
                 <div class="contact-card fade-in">
                     <div class="icon">📍</div>
@@ -1395,7 +1395,7 @@
     <script>
         // Initialize EmailJS
         (function(){
-            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual public key
+            emailjs.init("pNQ6pa4PIzu82c-ia");
         })();
 
         // Mobile Menu Toggle
@@ -1458,11 +1458,16 @@
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Sending...';
             submitBtn.disabled = true;
-
+            const formData = {
+                from_name: document.getElementById('name').value,
+                from_email: document.getElementById('email').value,
+                message: document.getElementById('message').value,
+                to_email: 'groomeofficial001@gmail.com'
+            };
             // Send email using EmailJS
             emailjs.sendForm(
-                'YOUR_SERVICE_ID',    // Replace with your service ID
-                'YOUR_TEMPLATE_ID',   // Replace with your template ID
+                'service_e2kzq9q',   
+                'template_gthm65l',   
                 contactForm
             )
             .then(() => {
@@ -1502,5 +1507,18 @@
             }
         });
     </script>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.5/build/spline-viewer.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
